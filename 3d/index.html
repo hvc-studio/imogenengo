@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Imogene Ngo. Barry's instructor and yoga teacher.">
+<title>Imogene Ngo</title>
+<meta name="theme-color" content="#0A0A0A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="img/seated-her.webp">
+<link rel="preload" as="image" href="img/seated-set.jpg">
+<style>
+  /* One continuous shot: the shoot rebuilt as a lit room with real depth, dollied through pose by pose, landing on the page.
+     Noir ground, bone type, no colour of our own; the only warmth is the shoot's single key. Fibonacci spacing 5 8 13 21 34 55 89. */
+  :root {
+    --noir:#0A0A0A; --bone:#F3F0EA; --bone-2:#B9B5AE; --bone-3:#77736D; --hair:#2A2A2A;
+    --display:"Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+    --body:"Jost", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --film:650vh;
+    color-scheme: dark;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html { background:var(--noir); }
+  body { background:var(--noir); color:var(--bone); font-family:var(--body); font-weight:300;
+         -webkit-font-smoothing:antialiased; line-height:1.6; overflow-x:hidden; }
+  a { color:inherit; text-decoration:none; }
+  a:focus-visible, button:focus-visible { outline:1px solid var(--bone); outline-offset:4px; }
+  .wrap { padding-left:max(21px, env(safe-area-inset-left, 0px)); padding-right:max(21px, env(safe-area-inset-right, 0px)); }
+  .in { max-width:1120px; margin-inline:auto; }
+  /* The serif in its sturdier setting: text optical size, no tracking. */
+  .serif, .mark, .first, .links .t, .grid h3, .email, footer .mark {
+    font-family:var(--display); font-optical-sizing:none; font-variation-settings:"opsz" 11; letter-spacing:0; }
+
+  /* ── Top bar: fixed, sits on a short noir fade so it never reads over the picture ── */
+  .bar { position:fixed; inset:0 0 auto 0; z-index:30; display:flex; justify-content:space-between; align-items:center;
+         padding:21px max(21px, env(safe-area-inset-right, 0px)) 34px max(21px, env(safe-area-inset-left, 0px));
+         background:linear-gradient(180deg, rgba(10,10,10,.82) 0%, rgba(10,10,10,.45) 55%, rgba(10,10,10,0) 100%); }
+  .bar .mark { font-style:italic; font-size:22px; }
+  .bar nav { display:flex; gap:21px; font-size:10px; letter-spacing:.28em; text-transform:uppercase; color:var(--bone-2); }
+  .bar nav a:hover { color:var(--bone); }
+  .bar .right { display:flex; align-items:center; gap:21px; }
+  .music { font:inherit; font-size:10px; letter-spacing:.28em; text-transform:uppercase; color:var(--bone-2); background:none; border:0;
+           padding:0; cursor:pointer; display:inline-flex; align-items:center; gap:8px; }
+  .music:hover { color:var(--bone); }
+  .music .dot { width:5px; height:5px; border-radius:50%; background:var(--bone-2); }
+  .music[aria-pressed="true"] .dot { background:var(--bone); animation:pulse 1618ms ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity:1 } 50% { opacity:.25 } }
+  #spotify-embed { position:fixed; left:-9999px; bottom:0; width:300px; height:80px; opacity:0; pointer-events:none; }
+
+  /* ── The film: a tall track with a sticky stage ── */
+  .film { position:relative; height:var(--film); }
+  .stage { position:sticky; top:0; height:100vh; height:100svh; overflow:hidden; background:var(--noir); }
+  .stage canvas { position:absolute; inset:0; width:100%; height:100%; display:block; }
+  /* A hairline at the foot of the stage shrinks as the visitor scrolls: the only cue. */
+  .cue { position:absolute; left:50%; bottom:34px; width:1px; height:55px; background:var(--bone-2); transform-origin:bottom;
+         opacity:.7; transition:opacity 600ms ease; pointer-events:none; }
+  .cue.gone { opacity:0; }
+  /* Flat picture for the stage before the room is ready, and the whole hero when motion or WebGL is off. */
+  .still { position:absolute; inset:0; display:block; width:100%; height:100%; object-fit:cover; object-position:50% 20%;
+           filter:grayscale(.25) contrast(1.04); opacity:1; transition:opacity 900ms ease; }
+  .still.off { opacity:0; }
+  .stage.live .still { pointer-events:none; }
+
+  /* ── After the film: her name, then the page ── */
+  .land { padding-block:89px 55px; }
+  .eyebrow { font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--bone-2); }
+  .first { font-style:italic; font-weight:400; font-size:clamp(64px, 9.5vw, 128px); line-height:.9; margin-top:13px; text-wrap:balance; }
+  .last { font-size:clamp(12px, 1.3vw, 15px); letter-spacing:.62em; text-transform:uppercase; margin-top:13px; padding-left:.2em; }
+  .line { margin-top:34px; font-size:14px; line-height:1.7; color:var(--bone-2); max-width:34ch; }
+
+  section { padding-block:55px; }
+  h2 { font-size:10px; font-weight:500; letter-spacing:.34em; text-transform:uppercase; color:var(--bone-3);
+       padding-bottom:13px; border-bottom:.5px solid var(--hair); }
+  .links { list-style:none; }
+  .links li { border-bottom:.5px solid var(--hair); }
+  .links a { display:grid; grid-template-columns:1fr auto; align-items:baseline; gap:21px; padding-block:21px; transition:padding-left 162ms ease; }
+  .links a:hover { padding-left:8px; }
+  .links a > span:first-child { min-width:0; }
+  .links .t { font-size:clamp(24px, 3vw, 34px); font-weight:400; line-height:1.1; }
+  .links .d { display:block; margin-top:5px; font-size:13px; color:var(--bone-2); font-family:var(--body); }
+  .links .arrow { font-size:10px; letter-spacing:.28em; text-transform:uppercase; color:var(--bone-2); white-space:nowrap; }
+  .links a:hover .arrow { color:var(--bone); }
+  .grid { display:grid; grid-template-columns:repeat(2, 1fr); gap:34px; margin-top:34px; }
+  .grid div { min-width:0; }
+  .grid h3 { font-weight:400; font-size:22px; line-height:1.2; }
+  .grid p { margin-top:8px; font-size:14px; color:var(--bone-2); }
+  .contact { display:flex; flex-wrap:wrap; gap:13px 34px; align-items:baseline; margin-top:34px; }
+  .email { font-size:clamp(20px, 2.6vw, 30px); word-break:break-all; }
+  .copy { font:inherit; font-size:10px; letter-spacing:.28em; text-transform:uppercase; color:var(--bone-2); background:none; border:0;
+          border-bottom:.5px solid var(--hair); padding:0 0 3px; cursor:pointer; }
+  .copy:hover { color:var(--bone); }
+  footer { padding-block:55px 34px; display:flex; flex-wrap:wrap; gap:13px 34px; justify-content:space-between;
+           font-size:10px; letter-spacing:.28em; text-transform:uppercase; color:var(--bone-3); border-top:.5px solid var(--hair); }
+  footer .mark { font-style:italic; text-transform:none; font-size:18px; color:var(--bone-2); }
+
+  @media (max-width:760px) {
+    :root { --film:520vh; }
+    .bar nav { display:none; }
+    .music { font-size:9px; }
+    .land { padding-block:55px 34px; }
+    .grid { grid-template-columns:1fr; gap:21px; }
+    section { padding-block:34px; }
+  }
+  /* Flat page: no film track, the portrait stands still, the pose photo returns as a break. */
+  html.flat .film { height:auto; }
+  html.flat .stage { position:relative; height:auto; display:flex; justify-content:center; padding-top:89px; }
+  html.flat .stage canvas, html.flat .cue { display:none; }
+  html.flat .still { position:relative; inset:auto; width:auto; max-width:100%; height:min(92vh, 125vw); opacity:1; }
+  html:not(.flat) .break { display:none; }
+  .break img { display:block; width:100%; height:auto; aspect-ratio:4 / 3; object-fit:cover; object-position:50% 78%; filter:grayscale(.25) contrast(1.04); }
+  @media (max-width:760px) { .break img { aspect-ratio:4 / 5; object-position:50% 60%; } }
+  @media (prefers-reduced-motion: reduce) {
+    .music[aria-pressed="true"] .dot { animation:none; }
+    .links a { transition:none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="mark" href="#top">Imogene</a>
+  <div class="right">
+    <nav>
+      <a href="#train">Train</a>
+      <a href="#work">Work with me</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="music" id="musicBtn" type="button" aria-pressed="false" title="Lunar, by Vayu and Nomyn"><span class="dot"></span><span id="musicLabel">Play Lunar</span></button>
+  </div>
+</header>
+
+<div class="film" id="top">
+  <div class="stage" id="stage">
+    <img class="still" id="still" src="../img/imogene-seated.jpg" alt="Imogene seated on a studio floor in a black bodysuit, looking at the camera" width="1400" height="2343" fetchpriority="high">
+    <canvas id="room" aria-hidden="true"></canvas>
+    <div class="cue" id="cue"></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="in">
+    <section class="land">
+      <h1 class="first">Imogene</h1>
+      <div class="last">Ngo</div>
+      <p class="line">Barry's instructor. Yoga teacher at The Studio. Division Director, Nixon.</p>
+    </section>
+
+    <section id="train">
+      <h2>Train with me</h2>
+      <ul class="links">
+        <li><a href="https://www.barrys.com/" target="_blank" rel="noopener">
+          <span><span class="t">Barry's</span><span class="d">Book a class with me.</span></span>
+          <span class="arrow">Book ↗</span></a></li>
+        <li><a href="#contact">
+          <span><span class="t">Yoga at The Studio</span><span class="d">Vinyasa and breathwork. 500-hour certified.</span></span>
+          <span class="arrow">Schedule ↗</span></a></li>
+        <li><a href="https://www.instagram.com/ngo.ge/" target="_blank" rel="noopener">
+          <span><span class="t">Instagram</span><span class="d">@ngo.ge. Where I'm teaching this week.</span></span>
+          <span class="arrow">Follow ↗</span></a></li>
+      </ul>
+    </section>
+  </div>
+</div>
+
+<figure class="break">
+  <img src="../img/imogene-backbend.jpg" alt="Imogene in king pigeon pose on a studio floor, lit from one side" width="1400" height="1882" loading="lazy">
+</figure>
+
+<div class="wrap">
+  <div class="in">
+    <section id="work">
+      <h2>Work with me</h2>
+      <div class="grid">
+        <div><h3>Brand partnerships</h3><p>I've spent fifteen years in retail and brand sales, and I only work with brands I'd wear.</p></div>
+        <div><h3>Events</h3><p>I'll teach a class for your team, your event, or your launch.</p></div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <div class="contact">
+        <span class="email" id="email">info@imogenengo.com</span>
+        <button class="copy" id="copyBtn" type="button">Copy email</button>
+      </div>
+    </section>
+
+    <footer>
+      <span class="mark">Imogene</span>
+      <span>imogenengo.com · <a href="https://open.spotify.com/track/6UTul92O3hyhqgvJHTCk5Z" target="_blank" rel="noopener">Lunar, Vayu &amp; Nomyn</a></span>
+    </footer>
+  </div>
+</div>
+
+<div id="spotify-embed"></div>
+
+<script>
+/* The room.
+   Each photo becomes three layers: the wall, the floor and her. They are placed by a homothety from one reference
+   camera, so at rest the three read as the photograph, and any move of the camera slides them apart at their true
+   depths: she is near the lens, the floor runs back under her, the wall stands behind. Scroll dollies forward through
+   the three poses; the key goes down between them. Pointer (or the phone's tilt) orbits the lens a few degrees. */
+(function () {
+  var doc = document.documentElement, stage = document.getElementById('stage'), cv = document.getElementById('room');
+  var still = document.getElementById('still'), cue = document.getElementById('cue');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var gl = null;
+  if (!reduce) { try { gl = cv.getContext('webgl2', {alpha:false, antialias:false, premultipliedAlpha:true, powerPreference:'high-performance'})
+                        || cv.getContext('webgl', {alpha:false, antialias:false, premultipliedAlpha:true}); } catch (e) { gl = null; } }
+  if (!gl) { doc.classList.add('flat'); window.__ready = true; return; }
+  var isGL2 = (typeof WebGL2RenderingContext !== 'undefined') && gl instanceof WebGL2RenderingContext;
+  var aniso = gl.getExtension('EXT_texture_filter_anisotropic') || gl.getExtension('WEBKIT_EXT_texture_filter_anisotropic');
+
+  /* The three poses. horizon: where the floor meets the wall, measured from the bottom of the frame.
+     feet: the lowest point of her cutout, from the bottom. mid: her vertical centre, the orbit's pivot. */
+  var POSES = [
+    { name:'seated',   a:1400/2343, horizon:0.334, feet:0.121, mid:0.47 },
+    { name:'backbend', a:1400/1882, horizon:0.310, feet:0.150, mid:0.43 },
+    { name:'lunge',    a:1400/1821, horizon:0.300, feet:0.046, mid:0.52 }
+  ];
+  /* Timeline in scroll progress: [lightsUp, fullFrom, fadeFrom, black]. The first pose is lit at rest. */
+  var CUTS = [ [0.00, 0.00, 0.22, 0.30], [0.35, 0.41, 0.55, 0.62], [0.66, 0.72, 0.87, 0.93] ];
+  var FOV = 30 * Math.PI / 180, TANH = Math.tan(FOV / 2), PUSH = 0.16;
+
+  /* ── shaders ── */
+  function sh(type, src) { var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; }
+  var prog = gl.createProgram();
+  gl.attachShader(prog, sh(gl.VERTEX_SHADER,
+    'attribute vec3 aPos; attribute vec2 aUV; uniform mat4 uMVP; varying vec2 vUV; varying vec3 vPos;' +
+    'void main(){ vUV = aUV; vPos = aPos; gl_Position = uMVP * vec4(aPos, 1.0); }'));
+  gl.attachShader(prog, sh(gl.FRAGMENT_SHADER,
+    'precision highp float; uniform sampler2D uTex; uniform float uKey; uniform float uEdge; uniform float uFloor; uniform vec3 uCam; uniform vec2 uRes; uniform float uT; varying vec2 vUV; varying vec3 vPos;' +
+    /* As the key goes down the darks crush first, so it reads as a light fading rather than a dissolve. */
+    /* the floor is mapped per pixel by projecting the point back through the reference lens (uCam: D, photo aspect, horizon) */
+    'void main(){ vec2 uv = vUV; if (uFloor > 0.5) { float s = uCam.x / (uCam.x - vPos.z); uv = vec2(vPos.x * s / uCam.y + 0.5, uCam.z * s + 0.5); }' +
+    ' vec4 c = texture2D(uTex, uv); float k = uKey * uKey;' +
+    /* the throw of one key: an ellipse of light, everything past it falls to black; grain lives only where there is light */
+    ' vec2 sc = gl_FragCoord.xy / uRes; float q = length(vec2((sc.x - 0.5) / 0.8, (sc.y - 0.48) / 0.95));' +
+    ' float dark = q < 0.42 ? 0.0 : (q < 0.7 ? 0.35 * (q - 0.42) / 0.28 : 0.35 + 0.55 * min(1.0, (q - 0.7) / 0.3)); k *= 1.0 - dark;' +
+    ' float g = fract(sin(dot(gl_FragCoord.xy + uT, vec2(12.9898, 78.233))) * 43758.5453) - 0.5;' +
+    /* past the photograph's edges the set falls off into the dark, the way the key's throw does */
+    ' float out1 = max(max(max(-uv.x, uv.x - 1.0), uv.y - 1.0), -uv.y); k *= 1.0 - uEdge * smoothstep(0.0, 0.95, out1);' +
+    ' vec3 rgb = c.rgb * k; rgb += g * 0.045 * k * c.a * (0.25 + rgb.g); rgb = rgb - (1.0 - uKey) * 0.06 * c.a; gl_FragColor = vec4(max(rgb, 0.0), c.a); }'));
+  gl.linkProgram(prog); gl.useProgram(prog);
+  var aPos = gl.getAttribLocation(prog, 'aPos'), aUV = gl.getAttribLocation(prog, 'aUV');
+  var uMVP = gl.getUniformLocation(prog, 'uMVP'), uKey = gl.getUniformLocation(prog, 'uKey'), uTex = gl.getUniformLocation(prog, 'uTex'), uEdge = gl.getUniformLocation(prog, 'uEdge'), uFloor = gl.getUniformLocation(prog, 'uFloor'), uCam = gl.getUniformLocation(prog, 'uCam'), uRes = gl.getUniformLocation(prog, 'uRes'), uT = gl.getUniformLocation(prog, 'uT');
+  gl.enableVertexAttribArray(aPos); gl.enableVertexAttribArray(aUV);
+  gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA); gl.disable(gl.DEPTH_TEST);
+  gl.uniform1i(uTex, 0);
+
+  /* ── tiny matrix kit ── */
+  function perspective(out, fovy, aspect, near, far) {
+    var f = 1 / Math.tan(fovy / 2), nf = 1 / (near - far);
+    out.set([f / aspect, 0, 0, 0,  0, f, 0, 0,  0, 0, (far + near) * nf, -1,  0, 0, 2 * far * near * nf, 0]); return out;
+  }
+  function lookAt(out, e, c, u) {
+    var zx = e[0] - c[0], zy = e[1] - c[1], zz = e[2] - c[2], l = 1 / Math.hypot(zx, zy, zz); zx *= l; zy *= l; zz *= l;
+    var xx = u[1] * zz - u[2] * zy, xy = u[2] * zx - u[0] * zz, xz = u[0] * zy - u[1] * zx; l = 1 / Math.hypot(xx, xy, xz); xx *= l; xy *= l; xz *= l;
+    var yx = zy * xz - zz * xy, yy = zz * xx - zx * xz, yz = zx * xy - zy * xx;
+    out.set([xx, yx, zx, 0,  xy, yy, zy, 0,  xz, yz, zz, 0,
+             -(xx * e[0] + xy * e[1] + xz * e[2]), -(yx * e[0] + yy * e[1] + yz * e[2]), -(zx * e[0] + zy * e[1] + zz * e[2]), 1]); return out;
+  }
+  function mul(out, a, b) {
+    var r = new Float32Array(16);
+    for (var i = 0; i < 4; i++) for (var j = 0; j < 4; j++)
+      r[j * 4 + i] = a[i] * b[j * 4] + a[4 + i] * b[j * 4 + 1] + a[8 + i] * b[j * 4 + 2] + a[12 + i] * b[j * 4 + 3];
+    out.set(r); return out;
+  }
+
+  /* ── textures ── */
+  var loaded = 0, NEED = POSES.length * 2, firstReady = false;
+  function texture(src, alpha, done) {
+    var t = gl.createTexture(), img = new Image();
+    img.decoding = 'async';
+    img.onload = function () {
+      gl.bindTexture(gl.TEXTURE_2D, t);
+      gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, alpha ? 1 : 0); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
+      gl.texImage2D(gl.TEXTURE_2D, 0, alpha ? gl.RGBA : gl.RGB, alpha ? gl.RGBA : gl.RGB, gl.UNSIGNED_BYTE, img);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      if (isGL2) { gl.generateMipmap(gl.TEXTURE_2D); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR); }
+      else gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      if (aniso) gl.texParameterf(gl.TEXTURE_2D, aniso.TEXTURE_MAX_ANISOTROPY_EXT, Math.min(8, gl.getParameter(aniso.MAX_TEXTURE_MAX_ANISOTROPY_EXT)));
+      t.ok = true; loaded++; done && done();
+    };
+    img.onerror = function () { loaded++; };
+    img.src = src; return t;
+  }
+  POSES.forEach(function (p, i) {
+    p.wallTex = texture('img/' + p.name + '-set.jpg', false, i === 0 ? firstFrame : null);
+    p.herTex = texture('img/' + p.name + '-her.webp', true, i === 0 ? firstFrame : null);
+  });
+  function firstFrame() {
+    if (firstReady || !POSES[0].wallTex.ok || !POSES[0].herTex.ok) return;
+    firstReady = true; stage.classList.add('live'); needFrame = true; frame();
+    requestAnimationFrame(function () { still.classList.add('off'); window.__ready = true; });
+  }
+
+  /* ── geometry: wall, floor and her, in the units of each photo (wall height 1) ── */
+  function buffer(arr) { var b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(arr), gl.STATIC_DRAW); b.n = arr.length / 5; return b; }
+  function quad(x0, y0, x1, y1, z, u0, v0, u1, v1) {
+    return [x0, y0, z, u0, v0,  x1, y0, z, u1, v0,  x1, y1, z, u1, v1,  x0, y0, z, u0, v0,  x1, y1, z, u1, v1,  x0, y1, z, u0, v1];
+  }
+  function build(p, D) {
+    var a = p.a, yh = p.horizon - 0.5, ys = p.feet - 0.5;
+    var k = yh / ys;                           /* her depth: her feet meet the floor exactly where the photo puts them */
+    p.k = k; p.z = D * (1 - k); p.pivot = [0, (p.mid - 0.5) * k * 0.5, p.z];
+    var ex = 2.6;                              /* the wall and floor run past the frame; the edge pixels continue the set */
+    p.wall = buffer(quad(-a * ex / 2, yh, a * ex / 2, 1.0, 0,  0.5 - ex / 2, p.horizon, 0.5 + ex / 2, 1.5));
+    p.her = buffer(quad(-a * k / 2, -k / 2, a * k / 2, k / 2, p.z, 0, 0, 1, 1));
+    var fl = [], N = 6, zEnd = D * 0.97, xw = a * ex / 2;
+    function fv(x, z) { var s = D / (D - z); return [x, yh, z, (x * s) / a + 0.5, yh * s + 0.5]; }
+    for (var i = 0; i < N; i++) {
+      var z0 = zEnd * Math.pow(i / N, 1.6), z1 = zEnd * Math.pow((i + 1) / N, 1.6);
+      var A = fv(-xw, z0), B = fv(xw, z0), C = fv(xw, z1), E = fv(-xw, z1);
+      fl.push.apply(fl, A); fl.push.apply(fl, B); fl.push.apply(fl, C); fl.push.apply(fl, A); fl.push.apply(fl, C); fl.push.apply(fl, E);
+    }
+    p.floor = buffer(fl);
+  }
+
+  /* ── fit: the picture to the viewport, the lens to the picture ── */
+  var W = 0, H = 0, aspect = 1, proj = new Float32Array(16), view = new Float32Array(16), mvp = new Float32Array(16);
+  function fit() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 1.75);
+    W = stage.clientWidth; H = stage.clientHeight; aspect = W / H;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); gl.viewport(0, 0, cv.width, cv.height); gl.uniform2f(uRes, cv.width, cv.height);
+    perspective(proj, FOV, aspect, 0.02, 20);
+    POSES.forEach(function (p) {
+      /* s: the photo's height as a share of the viewport's. Wide screens hold her a touch larger than the frame; narrow
+         ones keep her whole width. */
+      var s = Math.min(0.96, Math.max(0.70, (aspect / p.a) * 1.04));
+      p.D = 1 / (2 * TANH * s); build(p, p.D);
+    });
+    needFrame = true;
+  }
+
+  /* ── input: pointer or tilt, both smoothed, plus a slow breath so the room is never dead still ── */
+  var tx = 0, ty = 0, ox = 0, oy = 0, hasTilt = false;
+  window.addEventListener('pointermove', function (e) { if (e.pointerType === 'mouse') { tx = (e.clientX / W - 0.5) * 2; ty = (e.clientY / H - 0.5) * 2; needFrame = true; } }, {passive:true});
+  var beta0 = null;
+  function onTilt(e) {
+    if (e.gamma == null || e.beta == null) return;
+    if (beta0 === null) beta0 = e.beta;
+    hasTilt = true;
+    tx = Math.max(-1, Math.min(1, e.gamma / 18)); ty = Math.max(-1, Math.min(1, (e.beta - beta0) / 18)); needFrame = true;
+  }
+  if (window.DeviceOrientationEvent) {
+    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+      var ask = function () {
+        window.removeEventListener('touchend', ask);
+        DeviceOrientationEvent.requestPermission().then(function (r) { if (r === 'granted') window.addEventListener('deviceorientation', onTilt, {passive:true}); }).catch(function () {});
+      };
+      window.addEventListener('touchend', ask, {passive:true});
+    } else window.addEventListener('deviceorientation', onTilt, {passive:true});
+  }
+
+  /* ── scroll → progress ── */
+  var film = stage.parentNode, target = 0, p = 0, forced = null, needFrame = true, running = false, t0 = performance.now();
+  function readScroll() {
+    var span = film.offsetHeight - stage.clientHeight; if (span <= 0) span = 1;
+    target = Math.max(0, Math.min(1, (window.scrollY - film.offsetTop) / span));
+    if (target > 0.02) cue.classList.add('gone'); else cue.classList.remove('gone');
+    cue.style.transform = 'scaleY(' + (1 - Math.min(1, target * 12)) + ')';
+    needFrame = true; if (!running) loop();
+  }
+  window.addEventListener('scroll', function () { forced = null; readScroll(); }, {passive:true});
+  window.addEventListener('resize', function () { fit(); readScroll(); });
+
+  function ease(x) { x = Math.max(0, Math.min(1, x)); return x * x * (3 - 2 * x); }
+  function key(i, q) {
+    var c = CUTS[i];
+    if (q < c[0] || q >= c[3]) return 0;
+    if (q < c[1]) return ease((q - c[0]) / (c[1] - c[0]));
+    if (q > c[2]) return 1 - ease((q - c[2]) / (c[3] - c[2]));
+    return 1;
+  }
+  function draw(buf, tex, k, edge, floor) {
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.uniform1f(uEdge, edge); gl.uniform1f(uFloor, floor || 0);
+    gl.vertexAttribPointer(aPos, 3, gl.FLOAT, false, 20, 0); gl.vertexAttribPointer(aUV, 2, gl.FLOAT, false, 20, 12);
+    gl.bindTexture(gl.TEXTURE_2D, tex); gl.uniform1f(uKey, k); gl.drawArrays(gl.TRIANGLES, 0, buf.n);
+  }
+  function frame() {
+    gl.clearColor(10 / 255, 10 / 255, 10 / 255, 1); gl.clear(gl.COLOR_BUFFER_BIT);
+    if (!firstReady) return;
+    var now = performance.now(), t = (now - t0) / 1000;
+    var bx = reduce ? 0 : Math.sin(t / 5.3) * 0.18, by = reduce ? 0 : Math.sin(t / 7.9) * 0.12;
+    var yaw = (ox + bx) * 2.6 * Math.PI / 180, pitch = -(oy + by) * 1.5 * Math.PI / 180;
+    gl.uniform1f(uT, reduce ? 0 : (Math.floor(t * 12) % 7) * 13.7);
+    for (var i = 0; i < POSES.length; i++) {
+      var P = POSES[i], k = key(i, p); if (k <= 0 || !P.wallTex.ok || !P.herTex.ok) continue;
+      var c = CUTS[i], q = (p - c[0]) / (c[3] - c[0]);
+      var piv = P.pivot, v0 = [0 - piv[0], 0 - piv[1], P.D - piv[2]], len = Math.hypot(v0[0], v0[1], v0[2]) * (1 - PUSH * q);
+      /* orbit the lens about her, a few degrees, then push in along the same line */
+      var dy = Math.atan2(v0[1], v0[2]) + pitch, dx = yaw;
+      var eye = [piv[0] + len * Math.sin(dx) * Math.cos(dy), piv[1] + len * Math.sin(dy), piv[2] + len * Math.cos(dx) * Math.cos(dy)];
+      lookAt(view, eye, piv, [0, 1, 0]); mul(mvp, proj, view); gl.uniformMatrix4fv(uMVP, false, mvp);
+      gl.uniform3f(uCam, P.D, P.a, P.horizon - 0.5);
+      draw(P.wall, P.wallTex, k, 1); draw(P.floor, P.wallTex, k, 1, 1); draw(P.her, P.herTex, k, 0);
+    }
+  }
+  function loop() {
+    running = true;
+    var goal = forced == null ? target : forced;
+    p += (goal - p) * 0.11; if (Math.abs(goal - p) < 0.0004) p = goal;
+    ox += (tx - ox) * 0.06; oy += (ty - oy) * 0.06;
+    frame();
+    var settled = p === goal && Math.abs(tx - ox) < 0.002 && Math.abs(ty - oy) < 0.002 && reduce;
+    if (settled && !needFrame) { running = false; return; }
+    needFrame = false; requestAnimationFrame(loop);
+  }
+
+  /* dev hooks: ?jump=<scrollY> lands settled; __setP sets progress directly */
+  window.__setP = function (v) { forced = Math.max(0, Math.min(1, v)); p = forced; ox = tx; oy = ty; frame(); };
+  window.__getP = function () { return p; };
+  var jump = /[?&]jump=(\d+)/.exec(location.search), pq = /[?&]p=([\d.]+)/.exec(location.search);
+  if (pq) { forced = Math.max(0, Math.min(1, +pq[1])); p = forced; }
+  if (jump) { setTimeout(function () { window.scrollTo(0, +jump[1]); readScroll(); p = target; ox = tx; oy = ty; frame(); }, 0); }
+
+  fit(); readScroll(); loop();
+})();
+</script>
+<script>
+  (function () {
+    // Lunar, Vayu and Nomyn, from 0:27. Spotify's embed needs a tap before it will make sound.
+    var btn = document.getElementById('musicBtn'), label = document.getElementById('musicLabel');
+    var controller = null, playing = false, loading = false, START = 27;
+    function setState(p) { playing = p; btn.setAttribute('aria-pressed', p ? 'true' : 'false'); label.textContent = p ? 'Lunar' : 'Play Lunar'; }
+    function boot() {
+      loading = true; label.textContent = 'Loading';
+      window.onSpotifyIframeApiReady = function (IFrameAPI) {
+        IFrameAPI.createController(document.getElementById('spotify-embed'),
+          { uri: 'spotify:track:6UTul92O3hyhqgvJHTCk5Z', width: 300, height: 80 },
+          function (c) {
+            controller = c; loading = false;
+            c.addListener('ready', function () { c.play(); });
+            c.addListener('playback_update', function (e) {
+              var d = e.data || {};
+              if (!d.isPaused && d.position < START * 1000 - 500 && !c._seeked) { c._seeked = true; c.seek(START); }
+              setState(!d.isPaused);
+            });
+            c.play();
+          });
+      };
+      var s = document.createElement('script'); s.src = 'https://open.spotify.com/embed/iframe-api/v1'; s.async = true; document.body.appendChild(s);
+    }
+    btn.addEventListener('click', function () {
+      if (loading) return;
+      if (!controller) { boot(); return; }
+      controller.togglePlay();
+    });
+  })();
+</script>
+<script>
+  (function () {
+    var btn = document.getElementById('copyBtn');
+    var email = document.getElementById('email');
+    btn.addEventListener('click', function () {
+      var text = email.textContent.trim();
+      function done(ok) { btn.textContent = ok ? 'Copied' : 'Select and copy'; setTimeout(function(){ btn.textContent = 'Copy email'; }, 1600); }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function(){ done(true); }, function(){ select(); done(false); });
+      } else { select(); done(false); }
+      function select() {
+        try { var r = document.createRange(); r.selectNodeContents(email); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); } catch (e) {}
+      }
+    });
+  })();
+</script>
+</body>
+</html>
